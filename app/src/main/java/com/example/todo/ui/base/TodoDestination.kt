@@ -10,9 +10,11 @@ sealed class Route(
     @DrawableRes val icon: Int,
     val routeWithoutArgs: String = route
 ) {
-    data object Home : Route("home", R.string.app_name, R.drawable.ic_home)
+    data object Todo : Route("home", R.string.app_name, R.drawable.ic_edit_note)
+    data object Basic : Route("basic", R.string.basic_test, R.drawable.ic_notes)
 }
 
 val bottomBarScreens = listOf(
-    Route.Home,
+    Route.Todo,
+    Route.Basic,
 )

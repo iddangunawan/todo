@@ -25,6 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.todo.R
 import com.example.todo.common.util.NavigationUtil.navigateSingleTopTo
+import com.example.todo.ui.screen.TodoScreen
 
 @Composable
 fun TodoNavHost() {
@@ -32,15 +33,17 @@ fun TodoNavHost() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val currentScreen =
-        bottomBarScreens.find { it.route == currentDestination?.route } ?: Route.Home
+        bottomBarScreens.find { it.route == currentDestination?.route } ?: Route.Todo
 
     Scaffold(
         topBar = {
             TodoTopBar {
-                if (navController.currentBackStackEntry?.destination?.route == Route.Home.route) {
+                if (navController.currentBackStackEntry?.destination?.route == Route.Basic.route
+                    || navController.currentBackStackEntry?.destination?.route == Route.Todo.route
+                ) {
                     navController.popBackStack()
                 } else {
-                    navigateSingleTopTo(Route.Home.route, navController)
+                    navigateSingleTopTo(Route.Todo.route, navController)
                 }
             }
         },
@@ -88,11 +91,14 @@ private fun TodoNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Route.Home.route,
+        startDestination = Route.Todo.route,
         modifier = modifier
     ) {
-        composable(route = Route.Home.route) {
-//            HomeScreen()
+        composable(route = Route.Todo.route) {
+            TodoScreen()
+        }
+        composable(route = Route.Basic.route) {
+//            BasicTestScreen()
         }
     }
 }
