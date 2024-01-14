@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -14,7 +15,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,8 +36,9 @@ fun TodoNavHost() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val currentScreen =
-        bottomBarScreens.find { it.route == currentDestination?.route } ?: Route.Todo
+    val currentScreen = bottomBarScreens.find { it.route == currentDestination?.route } ?: Route.Todo
+
+    val showDialogAddTodo = remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -53,11 +58,22 @@ fun TodoNavHost() {
             ) {
                 navigateSingleTopTo(it.route, navController)
             }
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                showDialogAddTodo.value = true
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_add),
+                    contentDescription = stringResource(R.string.add_task),
+                )
+            }
         }
     ) {
         TodoNavHost(
             modifier = Modifier.padding(it),
-            navController = navController
+            navController = navController,
+            showDialogAddTodo = showDialogAddTodo,
         )
     }
 }
@@ -102,6 +118,7 @@ fun TodoTopBarWithBack(onBackClicked: () -> Unit) {
 private fun TodoNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    showDialogAddTodo: MutableState<Boolean>,
 ) {
     NavHost(
         navController = navController,
@@ -110,10 +127,7 @@ private fun TodoNavHost(
     ) {
         composable(route = Route.Todo.route) {
             TodoScreen(
-                todoClicked = {
-                    // Todo todo clicked
-                    println("todo clicked ${it.task}")
-                }
+                showDialogAddTodo = showDialogAddTodo,
             )
         }
         composable(route = Route.Basic.route) {

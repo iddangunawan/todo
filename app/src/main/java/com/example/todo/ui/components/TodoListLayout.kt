@@ -14,6 +14,7 @@ import com.example.todo.data.database.entity.TodoEntity
 fun TodoLayout(
     todoList: List<TodoEntity>,
     todoClicked: (TodoEntity) -> Unit,
+    todoClickedDelete: (TodoEntity) -> Unit,
     deleteTodo: (TodoEntity) -> Unit,
 ) {
     LazyColumn {
@@ -28,9 +29,15 @@ fun TodoLayout(
                 state = dismissState,
                 background = {},
                 dismissContent = {
-                    Todo(todo) {
-                        todoClicked(it)
-                    }
+                    Todo(
+                        todo = todo,
+                        onItemClick = {
+                            todoClicked(it)
+                        },
+                        onItemClickDelete = {
+                            todoClickedDelete(it)
+                        }
+                    )
                 },
             )
         }

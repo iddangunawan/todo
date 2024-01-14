@@ -7,19 +7,24 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "todo",
-    indices = [Index(
-        value = ["task", "status"],
-        unique = true
-    )]
+    indices = [
+        Index(
+            value = ["task", "notes", "status"],
+            unique = true
+        )
+    ]
 )
 
 data class TodoEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo("id")
-    var id: Int,
+    var id: Int = 0,
 
     @ColumnInfo("task")
     val task: String?,
+
+    @ColumnInfo("notes")
+    val notes: String?,
 
     @ColumnInfo("status")
     val status: Boolean?,
