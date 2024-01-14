@@ -2,4 +2,6 @@
     <string name="app_name">To Do</string>
 
     <string name="basic_test">Basic Test</string>
+    <string name="retry">Retry</string>
+    <string name="empty_todo">Empty Todo</string>
 </resources>
