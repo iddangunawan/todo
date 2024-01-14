@@ -13,14 +13,14 @@ import androidx.room.PrimaryKey
     )]
 )
 
-data class Todo(
+data class TodoEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo("id")
-    var id: Int = 0,
+    var id: Int,
 
     @ColumnInfo("task")
     val task: String?,
 
     @ColumnInfo("status")
-    val status: Int?,
+    val status: Boolean?,
 )
