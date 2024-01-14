@@ -37,14 +37,14 @@ fun TodoNavHost() {
 
     Scaffold(
         topBar = {
-            TodoTopBar {
-                if (navController.currentBackStackEntry?.destination?.route == Route.Basic.route
-                    || navController.currentBackStackEntry?.destination?.route == Route.Todo.route
-                ) {
-                    navController.popBackStack()
-                } else {
-                    navigateSingleTopTo(Route.Todo.route, navController)
-                }
+            if (navController.currentBackStackEntry?.destination?.route == Route.Basic.route) {
+                TodoTopBarWithBack(
+                    onBackClicked = {
+                        navController.popBackStack()
+                    },
+                )
+            } else {
+                TodoTopBar()
             }
         },
         bottomBar = {
@@ -64,7 +64,7 @@ fun TodoNavHost() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TodoTopBar(onBackClicked: () -> Unit) {
+fun TodoTopBar() {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -73,6 +73,20 @@ fun TodoTopBar(onBackClicked: () -> Unit) {
         title = {
             Text(stringResource(id = R.string.app_name))
         },
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TodoTopBarWithBack(onBackClicked: () -> Unit) {
+    TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.primary,
+        ),
+        title = {
+            Text(stringResource(id = R.string.basic_test))
+        },
         navigationIcon = {
             IconButton(onClick = { onBackClicked() }) {
                 Icon(
@@ -80,14 +94,14 @@ fun TodoTopBar(onBackClicked: () -> Unit) {
                     contentDescription = null
                 )
             }
-        }
+        },
     )
 }
 
 @Composable
 private fun TodoNavHost(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     NavHost(
         navController = navController,
@@ -95,7 +109,12 @@ private fun TodoNavHost(
         modifier = modifier
     ) {
         composable(route = Route.Todo.route) {
-            TodoScreen()
+            TodoScreen(
+                todoClicked = {
+                    // Todo todo clicked
+                    println("todo clicked ${it.task}")
+                }
+            )
         }
         composable(route = Route.Basic.route) {
 //            BasicTestScreen()
@@ -106,7 +125,7 @@ private fun TodoNavHost(
 @Composable
 fun TodoBottomNavigation(
     currentScreen: Route,
-    onIconSelected: (Route) -> Unit
+    onIconSelected: (Route) -> Unit,
 ) {
     NavigationBar {
         bottomBarScreens.forEach { screen ->
