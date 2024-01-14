@@ -3,6 +3,8 @@ package com.example.todo.di
 import android.app.Application
 import androidx.room.Room
 import com.example.todo.common.Const
+import com.example.todo.common.dispatcher.DefaultDispatcherProvider
+import com.example.todo.common.dispatcher.DispatcherProvider
 import com.example.todo.data.database.AppDatabaseService
 import com.example.todo.data.database.DatabaseService
 import com.example.todo.data.database.TodoDatabase
@@ -32,6 +34,10 @@ class ApplicationModule {
     @DbName
     @Provides
     fun provideDbName(): String = Const.DB_NAME
+
+    @Provides
+    @Singleton
+    fun provideDispatcher(): DispatcherProvider = DefaultDispatcherProvider()
 
     @Provides
     @Singleton
