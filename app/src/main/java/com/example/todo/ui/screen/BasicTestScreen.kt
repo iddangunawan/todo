@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
 fun BasicTestScreen(
@@ -46,9 +48,14 @@ fun BasicTestScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Test 3",
+            text = "Test 3 | 07:05:45PM",
             style = MaterialTheme.typography.titleMedium,
             maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+        Text(
+            text = "Answer: ${timeConversion("07:05:45PM")}",
+            style = MaterialTheme.typography.titleMedium,
             overflow = TextOverflow.Ellipsis,
         )
     }
@@ -94,4 +101,17 @@ fun plusMinus(arr: List<Int>): String {
     return "\n %.6f".format(positiveRatio) +
             "\n %.6f".format(negativeRatio) +
             "\n %.6f".format(zeroRatio)
+}
+
+fun timeConversion(s: String): String {
+    return try {
+        val inputFormat = SimpleDateFormat("hh:mm:ssa", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+
+        val date = inputFormat.parse(s)
+        outputFormat.format(date!!)
+    } catch (e: Exception) {
+        // Handle parsing exceptions or invalid input
+        "Invalid Time Format"
+    }
 }
