@@ -29,6 +29,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.todo.R
 import com.example.todo.common.util.NavigationUtil.navigateSingleTopTo
+import com.example.todo.ui.screen.BasicTestScreen
 import com.example.todo.ui.screen.TodoScreen
 
 @Composable
@@ -36,7 +37,8 @@ fun TodoNavHost() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val currentScreen = bottomBarScreens.find { it.route == currentDestination?.route } ?: Route.Todo
+    val currentScreen =
+        bottomBarScreens.find { it.route == currentDestination?.route } ?: Route.Todo
 
     val showDialogAddTodo = remember { mutableStateOf(false) }
 
@@ -131,7 +133,7 @@ private fun TodoNavHost(
             )
         }
         composable(route = Route.Basic.route) {
-//            BasicTestScreen()
+            BasicTestScreen()
         }
     }
 }
